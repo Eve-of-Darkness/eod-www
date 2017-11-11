@@ -1,0 +1,17 @@
+language: ruby
+sudo: false
+cache: bundler
+rvm:
+  - 2.3.1
+install: bundle install
+script: bundle exec rake site:travis
+addons:
+  ssh_known_hosts: www.eveofdarkness.org
+env:
+  global:
+    - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+before_install:
+  - echo -e "Host www.eveofdarkness.org\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+  - openssl aes-256-cbc -K $encrypted_7e0d7fac0058_key -iv $encrypted_7e0d7fac0058_iv -in deploy_key.enc -out deploy_key -d
+  - chmod 600 deploy_key
+  - mv deploy_key ~/.ssh/id_rsa
